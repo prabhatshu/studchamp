@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
-
+ 
 import {
   Channel,
   ChannelHeader,
@@ -24,6 +24,7 @@ const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
 
 const ChatPage = () => {
+  console.log("hello wolrd");
   const { id: targetUserId } = useParams();
 
   const [chatClient, setChatClient] = useState(null);
@@ -71,7 +72,7 @@ const ChatPage = () => {
         setChannel(currChannel);
       } catch (error) {
         console.error("Error initializing chat:", error);
-        toast.error("Could  Please try again.");
+        toast.error("Could not coonnect to chat. Please try again.");
       } finally {
         setLoading(false);
       }
