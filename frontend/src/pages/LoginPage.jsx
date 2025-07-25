@@ -9,7 +9,6 @@ const LoginPage = () => {
     password: "",
   });
 
-
   const { isPending, error, loginMutation } = useLogin();
 
   const handleLogin = (e) => {
@@ -18,109 +17,97 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
-      data-theme="forest"
-    >
-      <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
-        {/* LOGIN FORM SECTION */}
-        <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
-          {/* LOGO */}
-          <div className="mb-4 flex items-center justify-start gap-2">
-            <ShipWheelIcon className="size-9 text-primary" />
-            <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
-              StudChamp
-            </span>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] px-4">
+      <div className="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        
+        {/* Login Form */}
+        <div className="w-full lg:w-1/2 p-8 md:p-12 bg-white">
+          {/* Branding */}
+          <div className="mb-8 flex items-center gap-3">
+            <ShipWheelIcon className="text-indigo-600 w-8 h-8" />
+            <h1 className="text-3xl font-extrabold text-indigo-700 tracking-wide">StudChamp</h1>
           </div>
 
           {error && (
-            <div className="alert alert-error mb-4">
-              <span>{error.response.data.message}</span>
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+              {error.response.data.message}
             </div>
           )}
 
-          <div className="w-full">
-            <form onSubmit={handleLogin}>
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-xl font-semibold">Welcome Back</h2>
-                  <p className="text-sm opacity-70">
-                    Sign in to your account to continue your language journey
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <div className="form-control w-full space-y-2">
-                    <label className="label">
-                      <span className="label-text">Email</span>
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="hello@example.com"
-                      className="input input-bordered w-full"
-                      value={loginData.email}
-                      onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-control w-full space-y-2">
-                    <label className="label">
-                      <span className="label-text">Password</span>
-                    </label>
-                    <input
-                      type="password"
-                      placeholder="••••••••"
-                      className="input input-bordered w-full"
-                      value={loginData.password}
-                      onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
-                    {isPending ? (
-                      <>
-                        <span className="loading loading-spinner loading-xs"></span>
-                        Signing in...
-                      </>
-                    ) : (
-                      "Sign In"
-                    )}
-                  </button>
-
-                  <div className="text-center mt-4">
-                    <p className="text-sm">
-                      Don't have an account?{" "}
-                      <Link to="/signup" className="text-primary hover:underline">
-                        Create one
-                      </Link>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        {/* IMAGE SECTION */}
-        <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
-          <div className="max-w-md p-8">
-            {/* Illustration */}
-            <div className="relative aspect-square max-w-sm mx-auto">
-              <img src="/i.png" alt="Language connection illustration" className="w-full h-full" />
-            </div>
-
-            <div className="text-center space-y-3 mt-6">
-              <h2 className="text-xl font-semibold">Connect with language partners worldwide</h2>
-              <p className="opacity-70">
-                Practice conversations, make friends, and improve your language skills together
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-800">Welcome Back</h2>
+              <p className="text-sm text-gray-500">
+                Sign in to your account to continue your language journey
               </p>
             </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="you@example.com"
+                  value={loginData.email}
+                  onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                  type="password"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="••••••••"
+                  value={loginData.password}
+                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <span className="flex justify-center items-center gap-2">
+                    <span className="loading loading-spinner loading-xs" />
+                    Signing in...
+                  </span>
+                ) : (
+                  "Sign In"
+                )}
+              </button>
+            </div>
+
+            <p className="text-center text-sm text-gray-600 mt-4">
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-indigo-600 hover:underline">
+                Create one
+              </Link>
+            </p>
+          </form>
+        </div>
+
+        {/* Illustration Panel */}
+        <div className="hidden lg:flex w-full lg:w-1/2 bg-indigo-100 items-center justify-center">
+          <div className="p-10 text-center">
+            <img src="/i.png" alt="Language connection illustration" className="mx-auto mb-6 w-64 h-64 object-contain" />
+            <h2 className="text-xl font-bold text-indigo-800 mb-2">
+              Connect with language partners worldwide
+            </h2>
+            <p className="text-sm text-indigo-600">
+              Practice conversations, make friends, and improve your language skills together
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default LoginPage;
+
