@@ -143,7 +143,7 @@ const SignUpPage = () => {
           <div className="max-w-md p-8">
             <div className="relative aspect-square max-w-sm mx-auto">
               <img
-                src="/loginimage.jpg"
+                src="/signupimage.png"
                 alt="Collaboration illustration"
                 className="w-full h-full"
               />
