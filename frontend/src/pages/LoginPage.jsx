@@ -38,7 +38,7 @@ const LoginPage = () => {
             <div>
               <h2 className="text-2xl font-semibold text-gray-800">Welcome Back</h2>
               <p className="text-sm text-gray-500">
-                Sign in to your account to continue your language journey
+               Sign in to connect, collaborate, and grow with fellow learners.
               </p>
             </div>
 
@@ -95,12 +95,12 @@ const LoginPage = () => {
         {/* Illustration Panel */}
         <div className="hidden lg:flex w-full lg:w-1/2 bg-indigo-100 items-center justify-center">
           <div className="p-10 text-center">
-            <img src="/i.png" alt="Language connection illustration" className="mx-auto mb-6 w-64 h-64 object-contain" />
+            <img src="/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3UcSOln18WKibSr1XDblvY1mj14NncXr3pQ&s" alt="Language connection illustration" className="mx-auto mb-6 w-64 h-64 object-contain" />
             <h2 className="text-xl font-bold text-indigo-800 mb-2">
-              Connect with language partners worldwide
+              Join students from your course and learn together—anytime, anywhere.
             </h2>
             <p className="text-sm text-indigo-600">
-              Practice conversations, make friends, and improve your language skills together
+              Learn together, stay motivated, and support each other's academic and competitive journey.
             </p>
           </div>
         </div>
