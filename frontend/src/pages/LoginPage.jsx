@@ -24,7 +24,7 @@ const LoginPage = () => {
         <div className="w-full lg:w-1/2 p-8 md:p-12 bg-white">
           {/* Branding */}
           <div className="mb-8 flex items-center gap-3">
-            <ShipWheelIcon className="text-indigo-600 w-8 h-8" />
+            
             <h1 className="text-3xl font-extrabold text-indigo-700 tracking-wide">StudChamp</h1>
           </div>
 
