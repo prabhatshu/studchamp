@@ -12,7 +12,7 @@ export function getLanguageFlag(language) {
       <img
         src={`https://flagcdn.com/24x18/${countryCode}.png`}
         alt={`${langLower} flag`}
-        className="h-3 w-auto mr-1 inline-block"
+        className="h-3 mr-1 inline-block"
       />
     );
   }
@@ -21,46 +21,39 @@ export function getLanguageFlag(language) {
 
 const FriendCard = ({ friend }) => {
   return (
-    <div className="relative rounded-xl bg-white bg-opacity-80 backdrop-blur-md border border-gray-200 shadow-xl hover:shadow-2xl transition duration-300 ease-in-out overflow-hidden hover:scale-[1.02]">
-      {/* Profile Image */}
-      <div className="relative w-full h-36 bg-gradient-to-tr from-indigo-500 to-purple-500">
-        <div className="absolute top-2 left-2 bg-white text-xs px-2 py-0.5 rounded-full shadow-sm font-semibold text-gray-700">
-          {friend.fullName.split(" ")[0]}
-        </div>
-        <div className="absolute bottom-[-1.5rem] left-4">
-          <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md">
-            <img
-              src={friend.profilePic}
-              alt={friend.fullName}
-              className="object-cover w-full h-full"
-            />
+    <div className="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-200 rounded-xl">
+      <div className="card-body p-5">
+
+        {/* USER INFO */}
+        <div className="flex items-center gap-4 mb-4">
+          <div className="avatar">
+            <div className="w-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <img src={friend.profilePic} alt={friend.fullName} />
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-base-content">
+              {friend.fullName}
+            </h3>
           </div>
         </div>
-      </div>
 
-      {/* Card Content */}
-      <div className="pt-10 pb-4 px-4">
-        {/* Full Name */}
-        <h3 className="text-lg font-semibold truncate text-gray-800 mb-2 text-center">
-          {friend.fullName}
-        </h3>
-
-        {/* Language Badges */}
-        <div className="flex flex-col gap-1 mb-4 text-sm text-center">
-          <div className="flex items-center justify-center gap-2">
+        {/* LANGUAGES */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="badge badge-primary badge-outline text-sm">
             {getLanguageFlag(friend.nativeLanguage)}
-            <span className="text-gray-700">Native: {friend.nativeLanguage}</span>
-          </div>
-          <div className="flex items-center justify-center gap-2">
+            Native: {friend.nativeLanguage}
+          </span>
+          <span className="badge badge-secondary badge-outline text-sm">
             {getLanguageFlag(friend.learningLanguage)}
-            <span className="text-gray-700">Learning: {friend.learningLanguage}</span>
-          </div>
+            Learning: {friend.learningLanguage}
+          </span>
         </div>
 
-        {/* Message Button */}
+        {/* MESSAGE BUTTON */}
         <Link
           to={`/chat/${friend._id}`}
-          className="block w-full text-center py-2 text-sm font-medium rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 transition"
+          className="btn btn-primary btn-block rounded-full text-sm capitalize"
         >
           Message
         </Link>
@@ -70,3 +63,4 @@ const FriendCard = ({ friend }) => {
 };
 
 export default FriendCard;
+
