@@ -12,7 +12,7 @@ const Sidebar = () => {
       <div className="p-5 border-b border-base-300">
         <Link to="/" className="flex items-center gap-2.5">
           
-        
+        StudChamp
         </Link>
       </div>
 
