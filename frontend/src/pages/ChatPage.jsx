@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
- 
+
 import {
   Channel,
   ChannelHeader,
@@ -21,12 +21,8 @@ import CallButton from "../components/CallButton";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
-
-
 const ChatPage = () => {
-  console.log("hello wolrd");
   const { id: targetUserId } = useParams();
-
   const [chatClient, setChatClient] = useState(null);
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,7 +32,7 @@ const ChatPage = () => {
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
-    enabled: !!authUser, 
+    enabled: !!authUser,
   });
 
   useEffect(() => {
@@ -44,10 +40,6 @@ const ChatPage = () => {
       if (!tokenData?.token || !authUser) return;
 
       try {
-        console.log("hello g");
-        // console.log("Initializing stream chat client...");
-         console.log("Using STREAM_API_KEY:", STREAM_API_KEY);
-
         const client = StreamChat.getInstance(STREAM_API_KEY);
 
         await client.connectUser(
@@ -59,7 +51,6 @@ const ChatPage = () => {
           tokenData.token
         );
 
-        //
         const channelId = [authUser._id, targetUserId].sort().join("-");
 
         const currChannel = client.channel("messaging", channelId, {
@@ -72,7 +63,7 @@ const ChatPage = () => {
         setChannel(currChannel);
       } catch (error) {
         console.error("Error initializing chat:", error);
-        toast.error("Could not coonnect to chat. Please try again.");
+        toast.error("Could not connect to chat. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -96,21 +87,30 @@ const ChatPage = () => {
   if (loading || !chatClient || !channel) return <ChatLoader />;
 
   return (
-    <div className="h-[93vh]">
-      <Chat client={chatClient}>
-        <Channel channel={channel}>
-          <div className="w-full relative">
-            <CallButton handleVideoCall={handleVideoCall} />
-            <Window>
-              <ChannelHeader />
-              <MessageList />
-              <MessageInput focus />
-            </Window>
-          </div>
-          <Thread />
-        </Channel>
-      </Chat>
+    <div className="h-screen w-full bg-gradient-to-tr from-primary via-base-200 to-secondary flex items-center justify-center p-4 md:p-8">
+      <div className="w-full max-w-5xl h-full bg-base-100 rounded-xl shadow-xl overflow-hidden border border-primary/20">
+        <Chat client={chatClient} theme="messaging light">
+          <Channel channel={channel}>
+            <div className="relative h-full w-full flex flex-col">
+              <div className="px-4 py-3 border-b border-base-300 bg-base-200 shadow-sm flex justify-between items-center">
+                <ChannelHeader />
+                <CallButton handleVideoCall={handleVideoCall} />
+              </div>
+              <Window>
+                <div className="flex-1 overflow-y-auto px-4 py-2 bg-base-100">
+                  <MessageList />
+                </div>
+                <div className="border-t border-base-300 bg-base-200 px-4 py-3">
+                  <MessageInput focus />
+                </div>
+              </Window>
+              <Thread />
+            </div>
+          </Channel>
+        </Chat>
+      </div>
     </div>
   );
 };
+
 export default ChatPage;
