@@ -95,7 +95,7 @@ const LoginPage = () => {
         {/* Illustration Panel */}
         <div className="hidden lg:flex w-full lg:w-1/2 bg-indigo-100 items-center justify-center">
           <div className="p-10 text-center">
-            <img src="https://uploads-ssl.webflow.com/62fcfcf2e1a4c21ed18b80e6/64906e81924c58e2197ce6ce_WhatAreCollaborationToolsandHowDoesItWork_r4zg.png" alt="Language connection illustration" className="mx-auto mb-6 w-64 h-64 object-contain" />
+            <img src="signupimage.png" alt="Language connection illustration" className="mx-auto mb-6 w-64 h-64 object-contain" />
             <h2 className="text-xl font-bold text-indigo-800 mb-2">
               Join students from your course and learn together—anytime, anywhere.
             </h2>
