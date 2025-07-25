@@ -1,60 +1,116 @@
-import React, { useState } from 'react';
-import './ChatPage.css';
-import { useChatContext, useChannelStateContext } from 'stream-chat-react';
-import { toast } from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import useAuthUser from "../hooks/useAuthUser";
+import { useQuery } from "@tanstack/react-query";
+import { getStreamToken } from "../lib/api";
+ 
+import {
+  Channel,
+  ChannelHeader,
+  Chat,
+  MessageInput,
+  MessageList,
+  Thread,
+  Window,
+} from "stream-chat-react";
+import { StreamChat } from "stream-chat";
+import toast from "react-hot-toast";
+
+import ChatLoader from "../components/ChatLoader";
+import CallButton from "../components/CallButton";
+
+const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
+
+
 
 const ChatPage = () => {
-  const { client } = useChatContext();
-  const { channel } = useChannelStateContext();
+  console.log("hello wolrd");
+  const { id: targetUserId } = useParams();
 
-  const [message, setMessage] = useState('');
+  const [chatClient, setChatClient] = useState(null);
+  const [channel, setChannel] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleSendMessage = async () => {
-    if (message.trim() === '') return;
+  const { authUser } = useAuthUser();
 
-    await channel.sendMessage({ text: message });
-    setMessage('');
-  };
+  const { data: tokenData } = useQuery({
+    queryKey: ["streamToken"],
+    queryFn: getStreamToken,
+    enabled: !!authUser, 
+  });
+
+  useEffect(() => {
+    const initChat = async () => {
+      if (!tokenData?.token || !authUser) return;
+
+      try {
+        console.log("hello g");
+        // console.log("Initializing stream chat client...");
+         console.log("Using STREAM_API_KEY:", STREAM_API_KEY);
+
+        const client = StreamChat.getInstance(STREAM_API_KEY);
+
+        await client.connectUser(
+          {
+            id: authUser._id,
+            name: authUser.fullName,
+            image: authUser.profilePic,
+          },
+          tokenData.token
+        );
+
+        //
+        const channelId = [authUser._id, targetUserId].sort().join("-");
+
+        const currChannel = client.channel("messaging", channelId, {
+          members: [authUser._id, targetUserId],
+        });
+
+        await currChannel.watch();
+
+        setChatClient(client);
+        setChannel(currChannel);
+      } catch (error) {
+        console.error("Error initializing chat:", error);
+        toast.error("Could not coonnect to chat. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initChat();
+  }, [tokenData, authUser, targetUserId]);
 
   const handleVideoCall = () => {
     if (channel) {
-      const callUrl = `${window.location.origin}/call/${channel.id}`;
+      const callUrl = ${window.location.origin}/call/${channel.id};
 
       channel.sendMessage({
-        text: `I've started a video call. Join me here: ${callUrl}`,
+        text: I've started a video call. Join me here: ${callUrl},
       });
 
-      toast.success('Video call link sent successfully!');
+      toast.success("Video call link sent successfully!");
     }
   };
 
+  if (loading || !chatClient || !channel) return <ChatLoader />;
+
   return (
-    <div className="chat-page">
-      <header className="chat-header">
-        <h2 className="chat-title">Study Collaboration Room</h2>
-        <button className="call-btn" onClick={handleVideoCall}>
-          Start Video Call
-        </button>
-      </header>
-
-      <div className="chat-container">
-        <div className="message-window">
-          <channel.MessageList />
-        </div>
-
-        <div className="message-input">
-          <input
-            type="text"
-            placeholder="Type a message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-          />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
-      </div>
+    <div className="h-[93vh]">
+      <Chat client={chatClient}>
+        <Channel channel={channel}>
+          <div className="w-full relative">
+            <CallButton handleVideoCall={handleVideoCall} />
+            <Window>
+              <ChannelHeader />
+              <MessageList />
+              <MessageInput focus />
+            </Window>
+          </div>
+          <Thread />
+        </Channel>
+      </Chat>
     </div>
   );
 };
-
 export default ChatPage;
