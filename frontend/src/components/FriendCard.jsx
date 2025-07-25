@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { LANGUAGE_TO_FLAG } from "../constants";
 
-// ✅ Keep only this function
 export function getLanguageFlag(language) {
   if (!language) return null;
 
@@ -13,7 +12,7 @@ export function getLanguageFlag(language) {
       <img
         src={`https://flagcdn.com/24x18/${countryCode}.png`}
         alt={`${langLower} flag`}
-        className="h-3 mr-1 inline-block"
+        className="h-3 w-auto mr-1 inline-block"
       />
     );
   }
@@ -22,28 +21,47 @@ export function getLanguageFlag(language) {
 
 const FriendCard = ({ friend }) => {
   return (
-    <div className="card bg-base-200 hover:shadow-md transition-shadow">
-      <div className="card-body p-4">
-        {/* USER INFO */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="avatar size-12">
-            <img src={friend.profilePic} alt={friend.fullName} />
+    <div className="relative rounded-xl bg-white bg-opacity-80 backdrop-blur-md border border-gray-200 shadow-xl hover:shadow-2xl transition duration-300 ease-in-out overflow-hidden hover:scale-[1.02]">
+      {/* Profile Image */}
+      <div className="relative w-full h-36 bg-gradient-to-tr from-indigo-500 to-purple-500">
+        <div className="absolute top-2 left-2 bg-white text-xs px-2 py-0.5 rounded-full shadow-sm font-semibold text-gray-700">
+          {friend.fullName.split(" ")[0]}
+        </div>
+        <div className="absolute bottom-[-1.5rem] left-4">
+          <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md">
+            <img
+              src={friend.profilePic}
+              alt={friend.fullName}
+              className="object-cover w-full h-full"
+            />
           </div>
-          <h3 className="font-semibold truncate">{friend.fullName}</h3>
         </div>
+      </div>
 
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          <span className="badge badge-secondary text-xs">
+      {/* Card Content */}
+      <div className="pt-10 pb-4 px-4">
+        {/* Full Name */}
+        <h3 className="text-lg font-semibold truncate text-gray-800 mb-2 text-center">
+          {friend.fullName}
+        </h3>
+
+        {/* Language Badges */}
+        <div className="flex flex-col gap-1 mb-4 text-sm text-center">
+          <div className="flex items-center justify-center gap-2">
             {getLanguageFlag(friend.nativeLanguage)}
-            Native: {friend.nativeLanguage}
-          </span>
-          <span className="badge badge-outline text-xs">
+            <span className="text-gray-700">Native: {friend.nativeLanguage}</span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
             {getLanguageFlag(friend.learningLanguage)}
-            Learning: {friend.learningLanguage}
-          </span>
+            <span className="text-gray-700">Learning: {friend.learningLanguage}</span>
+          </div>
         </div>
 
-        <Link to={`/chat/${friend._id}`} className="btn btn-outline w-full">
+        {/* Message Button */}
+        <Link
+          to={`/chat/${friend._id}`}
+          className="block w-full text-center py-2 text-sm font-medium rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 transition"
+        >
           Message
         </Link>
       </div>
